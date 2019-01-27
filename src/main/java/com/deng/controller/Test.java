@@ -8,16 +8,11 @@ import com.deng.model.SysAclModule;
 import com.deng.param.TestVo;
 import com.deng.util.BeanValidator;
 import com.deng.util.JsonMapper;
-import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.validation.Valid;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/test")
