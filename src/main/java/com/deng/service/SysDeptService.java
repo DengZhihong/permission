@@ -1,10 +1,12 @@
 package com.deng.service;
 
+import com.deng.common.RequestHolder;
 import com.deng.dao.SysDeptMapper;
 import com.deng.exception.ParamException;
 import com.deng.model.SysDept;
 import com.deng.param.DeptParam;
 import com.deng.util.BeanValidator;
+import com.deng.util.IpUtil;
 import com.deng.util.LevelUtils;
 import com.google.common.base.Preconditions;
 import org.apache.commons.collections.CollectionUtils;
@@ -47,8 +49,8 @@ public class SysDeptService {
                 .build();
 
         sysDept.setLevel(LevelUtils.caculateLevel(getLevel(deptParam.getParentId()), deptParam.getParentId()));
-        sysDept.setOperateIp("127.0.0.1");//TODO
-        sysDept.setOperator("sys");//TODO
+        sysDept.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
+        sysDept.setOperator(RequestHolder.getCurrentUser().getUsername());
         sysDept.setOperateTime(new Date());
         sysDeptMapper.insertSelective(sysDept);//插入不为空的参数
     }
@@ -76,7 +78,7 @@ public class SysDeptService {
      * @return
      */
     private boolean checkExist(Integer parentId, String deptName, Integer deptId) {
-        return sysDeptMapper.countByNameAndParentId(parentId,deptName,deptId) > 0;
+        return sysDeptMapper.countByNameAndParentId(parentId, deptName, deptId) > 0;
     }
 
     /**
@@ -103,8 +105,8 @@ public class SysDeptService {
                 .build();
 
         after.setLevel(LevelUtils.caculateLevel(getLevel(param.getParentId()), param.getParentId()));
-        after.setOperateIp("127.0.0.1");//TODO
-        after.setOperator("sys update");//TODO
+        after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
+        after.setOperator(RequestHolder.getCurrentUser().getUsername());
         after.setOperateTime(new Date());
 
         updateWithChild(before, after);

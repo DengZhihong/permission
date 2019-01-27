@@ -2,6 +2,7 @@ package com.deng.common;
 
 import com.deng.util.JsonMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.executor.ReuseExecutor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -27,7 +28,7 @@ public class HttpInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-
+        removeThreadLocalInfo();
     }
 
     @Override
@@ -38,5 +39,11 @@ public class HttpInterceptor extends HandlerInterceptorAdapter {
         long end = System.currentTimeMillis();
 
         log.info("request end. url:{}, cost:{}", url, end - start);
+        removeThreadLocalInfo();
+    }
+
+    public void removeThreadLocalInfo() {
+        RequestHolder.remove();
     }
 }
+
